@@ -1,0 +1,20 @@
+@import url('https://cdn.jsdelivr.net/gh/AumGupta/abyss-jellyfin@main/abyss.css');
+
+
+/* Media Bar Enhanced - iPad landscape fix */
+@media (min-width: 769px) and (max-width: 1600px)
+       and (orientation: landscape)
+       and (hover: none)
+       and (pointer: coarse) {
+    .homeSectionsContainer {
+        top: auto !important;
+        margin-top: 74vh !important;
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom)) !important;
+    }
+}
+
+
+/* Home - bottom spacing after Studios */
+#rs-studio-hubs {
+    padding-bottom: 6rem !important;
+}

@@ -1,0 +1,26 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Local secrets / exports
+.env
+.env.*
+!.env.example
+secrets/
+private/
+exports/
+*.token
+*.key
+*.pem
+
+# Raw Jellyfin config/database backups should never be committed here
+config/
+data/
+cache/
+logs/
+*.db
+*.db-shm
+*.db-wal
