@@ -1,28 +1,29 @@
-# Plugin stack
+# Plugins
 
-This file records the versions used by this setup as of 2026-08-08. It is not a recommendation to blindly install the latest version of every plugin.
+These are the versions currently used by this Jellyfin 12 RC setup. The table is a snapshot of the working server, not a recommendation to install whatever happens to be newest.
 
 | Component | Version / state | Notes |
 | --- | --- | --- |
 | Jellyfin | 12.0 RC | Web/webview target |
 | Media Bar Enhanced | 3.3.0.0 | Home hero and trailer playback |
-| Jellyfin Enhanced | 12.1.0.0 | Seerr and *arr integration enabled |
-| SmartLists | 12.0.0.12 | Smart collections used by custom Home rows |
-| JavaScript Injector | 3.6.0.0 | Jellyfin 12-compatible fork used for custom snippets |
+| Jellyfin Enhanced | 12.1.0.0 | Seerr and *arr integrations enabled |
+| SmartLists | 12.0.0.12 | Builds the collections used by the custom Home rows |
+| JavaScript Injector | 3.6.0.0 | Jellyfin 12-compatible build used for the custom snippets |
 | NotifySync | v12 preview build | Used with the Jellyfin 12 setup |
-| JellyChat | 2.0.0.0 | Installed |
+| JellyChat | 2.1.0.0 | Installed and used with Jellyfin 12 |
 | TMDb Box Sets | 13.2605.13.0 | Installed |
 | Fanart | 14.2605.10.0 | Installed |
 | Trakt | 30.2606.17.0 | Installed |
-| Abyss | upstream `main` CSS | Custom CSS imports upstream theme directly |
+| Abyss | upstream `main` CSS | Imported directly from Custom CSS |
 
-## Important compatibility notes
+## Home and theme choices
 
-- The setup intentionally does **not** install Abyss Spotlight because Media Bar Enhanced already provides the Home hero/trailer experience.
-- The setup intentionally does **not** use Abyss Home-section reordering.
-- Abyss currently targets the legacy Jellyfin interface more accurately than Jellyfin 12's modern/experimental UI. An upstream support request has been opened separately.
-- Old Abyss Media Bar / Jellyfin Enhanced override files should not be assumed compatible with the plugin versions above.
+Media Bar Enhanced owns the Home hero/trailer area, so Abyss Spotlight is not installed. Abyss Home-section reordering is also left disabled because the custom Home layout is handled by the Injector scripts instead.
 
-## Secrets
+Abyss currently fits Jellyfin's legacy interface better than the modern/experimental Jellyfin 12 interface. Because of that, old theme overrides should not be assumed to work unchanged with this stack.
 
-Do not store Seerr, Sonarr, Radarr, Bazarr or TMDb API keys in this repository. Keep only example placeholders in documentation.
+## Integrations
+
+Jellyfin Enhanced is configured against Seerr and the *arr services on the running server. Their URLs and API keys stay in Jellyfin itself and are deliberately not mirrored here.
+
+For the rest of the restore flow, see the [setup guide](setup.md). The Home scripts are documented in [javascript/README.md](../javascript/README.md), and the SmartLists definitions are in [smartlists/README.md](../smartlists/README.md).

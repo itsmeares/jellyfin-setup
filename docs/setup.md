@@ -1,40 +1,41 @@
-# Setup notes
+# Setup
 
-This repository preserves the web customization layer. It is deliberately not a raw backup of Jellyfin's `/config` directory.
+This is the short version of how the pieces in this repository fit together. It covers the frontend customisation layer only; it is not intended to recreate the whole Jellyfin server from a raw `/config` backup.
 
-## Custom CSS
+## 1. Install the matching plugins
 
-Copy `css/custom.css` into Jellyfin's Custom CSS field.
+Start with the versions listed in [plugins.md](plugins.md). This setup is built around Jellyfin 12 RC, so plugin compatibility matters more than simply installing the latest release.
 
-The current CSS does three things only:
+## 2. Apply the Custom CSS
+
+Copy [`css/custom.css`](../css/custom.css) into Jellyfin's Custom CSS field.
+
+The current CSS stays deliberately small. It:
 
 1. imports the upstream Abyss theme;
-2. preserves the iPad landscape spacing required by Media Bar Enhanced;
-3. adds bottom spacing after the custom Studios row.
+2. keeps the Media Bar Enhanced layout usable on iPad landscape;
+3. adds a little breathing room below the custom Studios row.
 
-Do not add old Watcha/Jellium theme overrides on top of this baseline.
+Old Watcha/Jellium overrides are not part of this setup and should not be layered back on top by default.
 
-## JavaScript Injector
+## 3. Restore the JavaScript Injector snippets
 
-The JavaScript files in `javascript/` are intended to be installed as separate snippets in their numbered order.
+Add the files from [`javascript/`](../javascript/) as separate JavaScript Injector entries, in the order documented in [javascript/README.md](../javascript/README.md).
 
-Only commit exact snippets exported from the working server. Do not reconstruct missing snippets from memory.
+Those files are kept as exports from the working server. If the running setup changes, export the new working snippets rather than rebuilding them from memory.
 
-## SmartLists
+## 4. Recreate the SmartLists
 
-Create the SmartLists documented under `smartlists/` and keep their names stable because the Home JavaScript locates them by name.
+Create the four collections documented in [smartlists/README.md](../smartlists/README.md). Their names need to stay the same because the Home script finds the generated collections by name.
 
-## Integrations
+The `.example.json` files preserve the actual rules while leaving out user IDs, collection IDs, timestamps, and other instance-specific state. Choose the appropriate reference user on the server when recreating each collection.
 
-Jellyfin Enhanced is configured separately for Seerr and the *arr applications. Store URLs/API keys only in the running Jellyfin configuration, never in this public repository.
+## 5. Configure private integrations on the server
 
-## Abyss
+Jellyfin Enhanced handles the Seerr and *arr integrations used by this setup. Configure their URLs and API keys directly in Jellyfin; those values are intentionally not stored in this public repository.
 
-Abyss is used as the real upstream theme via `abyss.css`.
+## Theme behaviour
 
-This setup intentionally omits:
+Abyss is imported directly from its upstream `main` CSS. Media Bar Enhanced remains responsible for the Home hero/trailer area, so this setup does not use Abyss Spotlight or Abyss Home-section reordering.
 
-- Abyss Spotlight;
-- Abyss Home-section reordering.
-
-Media Bar Enhanced remains responsible for the Home hero/trailer area.
+Once these pieces are in place, the expected Home layout is documented in [smartlists/README.md](../smartlists/README.md).

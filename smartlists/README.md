@@ -1,50 +1,52 @@
 # SmartLists
 
-The Home scripts expect these SmartLists to exist with these names:
+These four SmartLists power the custom Home rows used by `javascript/02-smartlists-home.js`:
 
 - `Top Rated Movies`
 - `Top Rated TV Shows`
 - `Currently Airing`
 - `Recent Releases`
 
-Keep the names stable because `javascript/02-smartlists-home.js` locates the generated collections by name.
+The names are part of the contract between SmartLists and the Home script, so keep them unchanged.
 
-## Reproducible definitions
+## Recreating the collections
 
-The `.example.json` files in this directory preserve the SmartLists plugin-side rules exported from the working server on 2026-08-08, with instance-specific state removed.
+The `.example.json` files below come from the working server and preserve the real SmartLists rules without carrying over private or instance-specific state.
 
-They intentionally omit:
+| Collection | Definition |
+| --- | --- |
+| Top Rated Movies | [`top-rated-movies.example.json`](top-rated-movies.example.json) |
+| Top Rated TV Shows | [`top-rated-tv-shows.example.json`](top-rated-tv-shows.example.json) |
+| Currently Airing | [`currently-airing.example.json`](currently-airing.example.json) |
+| Recent Releases | [`recent-releases.example.json`](recent-releases.example.json) |
 
-- SmartLists IDs;
-- Jellyfin collection IDs;
-- reference/creator user IDs;
-- creation and refresh timestamps;
-- item counts and runtime statistics.
+Create each one as a SmartLists **Collection** and select the appropriate reference user for your own Jellyfin instance. The example files deliberately leave out list IDs, Jellyfin collection IDs, user IDs, timestamps, item counts, and runtime statistics.
 
-Create each entry as a SmartLists **Collection**, select the appropriate reference user for your own Jellyfin instance, and reproduce the remaining fields from the matching example file. Do not copy private instance identifiers from another server.
-
-### Current rules
+## Current rules
 
 | Name | Media | Filter | Sort | Max | Refresh |
 | --- | --- | --- | --- | ---: | --- |
-| `Top Rated Movies` | Movie | Community Rating >= 7.5 | Community Rating descending | 20 | On library changes |
-| `Top Rated TV Shows` | Series | Community Rating >= 7.5 | Community Rating descending | 20 | On library changes |
+| `Top Rated Movies` | Movie | Community Rating ≥ 7.5 | Community Rating descending | 20 | On library changes |
+| `Top Rated TV Shows` | Series | Community Rating ≥ 7.5 | Community Rating descending | 20 | On library changes |
 | `Currently Airing` | Series | Series Status = Continuing | Last Episode Air Date descending | 20 | On library changes |
 | `Recent Releases` | Movie | Release Date newer than 3 months | Release Date descending, then Community Rating descending | 20 | On library changes |
 
-All four collections are enabled, exclude extras, hide when empty, and have no explicit refresh or visibility schedules.
+All four are enabled, exclude extras, hide themselves when empty, and have no explicit refresh or visibility schedule.
 
-## Home-side sorting
+## What the Home script does on top
 
-The exported JavaScript Injector script applies the Home presentation order independently of the plugin-side collection order:
+The plugin decides which items belong in each collection. The Injector script then renders those collections on Home and applies its own presentation sorting:
 
 - `Top Rated Movies` — Community Rating descending
 - `Top Rated TV Shows` — Community Rating descending
 - `Currently Airing` — latest episode premiere date descending, then Community Rating descending
 - `Recent Releases` — premiere/release date descending
-- maximum 20 rendered items per row
 
-## Intended Home order
+At most 20 items are rendered in each custom row.
+
+## Home order
+
+The intended Home layout is:
 
 ```text
 Media Bar
@@ -59,3 +61,5 @@ Recently Added in Movies
 Recently Added in TV Shows
 Studios
 ```
+
+See [javascript/README.md](../javascript/README.md) for the Injector load order and [docs/setup.md](../docs/setup.md) for the full restore flow.

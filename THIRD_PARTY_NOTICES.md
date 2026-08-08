@@ -1,8 +1,10 @@
 # Third-party notices
 
+A small part of this setup builds on work from other projects or references third-party brand assets at runtime. This file keeps the relevant attribution in one place.
+
 ## StudioHubs
 
-Parts of `javascript/03-home-hubs.js` adapt frontend ideas and behavior from `MFerretti27/StudioHubs`.
+[`javascript/03-home-hubs.js`](javascript/03-home-hubs.js) adapts parts of the frontend behaviour and presentation originally used by [MFerretti27/StudioHubs](https://github.com/MFerretti27/StudioHubs).
 
 StudioHubs is distributed under the MIT License:
 
@@ -28,8 +30,8 @@ StudioHubs is distributed under the MIT License:
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 
-Source: https://github.com/MFerretti27/StudioHubs
+## Brand assets and intro media
 
-## Brand assets / intro media
+The Home Hubs script references some third-party logos and intro videos from their original locations at runtime. Those files are not redistributed by this repository, and their trademarks and media remain the property of their respective owners.
 
-The Home Hubs snippet references third-party brand/logo/video URLs at runtime rather than redistributing those files in this repository. Their trademarks and media remain the property of their respective owners. Review the source repository and asset terms before redistributing or mirroring those files yourself.
+If those assets are ever mirrored or bundled directly into this repository, their source and redistribution terms should be reviewed separately first.
