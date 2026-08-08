@@ -1,0 +1,40 @@
+{
+  "Type": "Collection",
+  "Name": "Recent Releases",
+  "ExpressionSets": [
+    {
+      "Expressions": [
+        {
+          "MemberName": "ReleaseDate",
+          "Operator": "NewerThan",
+          "TargetValue": "3:months"
+        }
+      ],
+      "MaxItems": null
+    }
+  ],
+  "Order": {
+    "SortOptions": [
+      {
+        "SortBy": "ReleaseDate",
+        "SortOrder": "Descending"
+      },
+      {
+        "SortBy": "CommunityRating",
+        "SortOrder": "Descending"
+      }
+    ]
+  },
+  "MediaTypes": [
+    "Movie"
+  ],
+  "IncludeExtras": false,
+  "HideWhenEmpty": true,
+  "Enabled": true,
+  "MaxItems": 20,
+  "MaxPlayTimeMinutes": 0,
+  "AutoRefresh": "OnLibraryChanges",
+  "Schedules": [],
+  "VisibilitySchedules": [],
+  "SimilarityComparisonFields": []
+}

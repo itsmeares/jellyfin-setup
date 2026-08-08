@@ -1,0 +1,36 @@
+{
+  "Type": "Collection",
+  "Name": "Currently Airing",
+  "ExpressionSets": [
+    {
+      "Expressions": [
+        {
+          "MemberName": "SeriesStatus",
+          "Operator": "Equal",
+          "TargetValue": "Continuing"
+        }
+      ],
+      "MaxItems": null
+    }
+  ],
+  "Order": {
+    "SortOptions": [
+      {
+        "SortBy": "LastEpisodeAirDate",
+        "SortOrder": "Descending"
+      }
+    ]
+  },
+  "MediaTypes": [
+    "Series"
+  ],
+  "IncludeExtras": false,
+  "HideWhenEmpty": true,
+  "Enabled": true,
+  "MaxItems": 20,
+  "MaxPlayTimeMinutes": 0,
+  "AutoRefresh": "OnLibraryChanges",
+  "Schedules": [],
+  "VisibilitySchedules": [],
+  "SimilarityComparisonFields": []
+}

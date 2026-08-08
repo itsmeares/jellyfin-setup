@@ -1,0 +1,36 @@
+{
+  "Type": "Collection",
+  "Name": "Top Rated Movies",
+  "ExpressionSets": [
+    {
+      "Expressions": [
+        {
+          "MemberName": "CommunityRating",
+          "Operator": "GreaterThanOrEqual",
+          "TargetValue": "7.5"
+        }
+      ],
+      "MaxItems": null
+    }
+  ],
+  "Order": {
+    "SortOptions": [
+      {
+        "SortBy": "CommunityRating",
+        "SortOrder": "Descending"
+      }
+    ]
+  },
+  "MediaTypes": [
+    "Movie"
+  ],
+  "IncludeExtras": false,
+  "HideWhenEmpty": true,
+  "Enabled": true,
+  "MaxItems": 20,
+  "MaxPlayTimeMinutes": 0,
+  "AutoRefresh": "OnLibraryChanges",
+  "Schedules": [],
+  "VisibilitySchedules": [],
+  "SimilarityComparisonFields": []
+}
