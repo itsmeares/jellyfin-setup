@@ -1,0 +1,151 @@
+/*
+ * JellyChat + Abyss
+ *
+ * Apply in JellyChat -> Appearance, not Jellyfin Branding.
+ *
+ * Recommended JellyChat color fields:
+ *   Accent color:             rgb(var(--abyss-accent))
+ *   Drawer background color:  rgb(var(--abyss-glass-tint))
+ *   Panel/input background:    leave empty
+ *   Border color:              leave empty
+ *   Text color:                leave empty
+ *
+ * Paste the CSS below into JellyChat -> Appearance -> Advanced custom CSS.
+ * The panel, border and text fields are intentionally left empty because
+ * JellyChat maps each of those fields to every related shade. Keeping the
+ * hierarchy here preserves the subtle Abyss surface/text levels.
+ */
+
+:root {
+    --jellychat-panel-background: rgb(var(--abyss-glass-tint));
+    --jellychat-panel-background-extra-faint: rgba(var(--abyss-accent), .035);
+    --jellychat-panel-background-faint: rgba(var(--abyss-accent), .055);
+    --jellychat-panel-background-soft: rgba(var(--abyss-accent), .07);
+    --jellychat-panel-background-medium: rgba(var(--abyss-accent), .08);
+    --jellychat-panel-background-raised: rgba(var(--abyss-accent), .10);
+    --jellychat-panel-background-selected: rgba(var(--abyss-accent), .12);
+    --jellychat-panel-background-emphasis: rgba(var(--abyss-accent), .16);
+    --jellychat-panel-background-trigger: rgba(var(--abyss-glass-tint), .82);
+    --jellychat-panel-background-overlay: rgba(var(--abyss-glass-tint), .72);
+    --jellychat-panel-background-active: rgba(var(--abyss-glass-tint), .94);
+    --jellychat-panel-background-popover: rgba(var(--abyss-glass-tint), .92);
+    --jellychat-panel-background-popover-soft: rgba(var(--abyss-glass-tint), .88);
+
+    --jellychat-border-faint: rgba(var(--abyss-accent), .06);
+    --jellychat-border-soft: rgba(var(--abyss-accent), .10);
+    --jellychat-border: rgba(var(--abyss-accent), .12);
+    --jellychat-border-medium: rgba(var(--abyss-accent), .14);
+    --jellychat-border-semi-strong: rgba(var(--abyss-accent), .16);
+    --jellychat-border-strong: rgba(var(--abyss-accent), .18);
+    --jellychat-border-robust: rgba(var(--abyss-accent), .22);
+    --jellychat-border-prominent: rgba(var(--abyss-accent), .38);
+
+    --jellychat-text: rgba(var(--abyss-accent), .96);
+    --jellychat-text-strong: rgb(var(--abyss-accent));
+    --jellychat-text-heading: rgba(var(--abyss-accent), .98);
+    --jellychat-text-secondary: rgba(var(--abyss-accent), .92);
+    --jellychat-text-tertiary: rgba(var(--abyss-accent), .84);
+    --jellychat-text-control: rgba(var(--abyss-accent), .78);
+    --jellychat-text-muted: rgba(var(--abyss-accent), .70);
+    --jellychat-text-dim: rgba(var(--abyss-accent), .66);
+    --jellychat-text-soft: rgba(var(--abyss-accent), .62);
+    --jellychat-text-disabled: rgba(var(--abyss-accent), .42);
+
+    --jellychat-accent-contrast: #121212;
+}
+
+#jellyChatRoot,
+.jellyChatMessageActionMenu,
+.jellyChatCopyFeedback {
+    font-family: "Google Sans", sans-serif !important;
+}
+
+#jellyChatDrawer {
+    background-image: none !important;
+    border-left-color: rgba(var(--abyss-accent), .20) !important;
+    border-radius: var(--abyss-radius) 0 0 var(--abyss-radius) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, .10) !important;
+    -webkit-backdrop-filter: blur(var(--abyss-glass-blur)) saturate(120%) !important;
+    backdrop-filter: blur(var(--abyss-glass-blur)) saturate(120%) !important;
+    transition: transform .37s var(--abyss-ease) !important;
+}
+
+html.jellychat-drawer-left #jellyChatDrawer {
+    border-right-color: rgba(var(--abyss-accent), .20) !important;
+    border-left: 0 !important;
+    border-radius: 0 var(--abyss-radius) var(--abyss-radius) 0 !important;
+}
+
+html.jellychat-phone-portrait #jellyChatDrawer,
+body.jellychat-phone-portrait #jellyChatDrawer,
+.jellychat-fullscreen-host.jellychat-phone-portrait #jellyChatDrawer {
+    border-radius: var(--abyss-radius) var(--abyss-radius) 0 0 !important;
+}
+
+.jellyChatHeader {
+    background: rgba(var(--abyss-glass-tint), .48) !important;
+    border-bottom-color: rgba(var(--abyss-accent), .12) !important;
+}
+
+.jellyChatComposerArea,
+.jellyChatEmojiPickerToolbar {
+    background: rgba(var(--abyss-glass-tint), .55) !important;
+    background-image: none !important;
+}
+
+.jellyChatSettingsPopover,
+.jellyChatMessageActionMenu,
+.jellyChatCopyFeedback {
+    background: rgba(var(--abyss-glass-tint), .90) !important;
+    border-color: rgba(var(--abyss-accent), .18) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, .10) !important;
+    -webkit-backdrop-filter: blur(var(--abyss-glass-blur)) !important;
+    backdrop-filter: blur(var(--abyss-glass-blur)) !important;
+}
+
+#jellyChatStatus,
+#jellyChatInput,
+#jellyChatSendButton,
+.jellyChatSettingsPopover,
+.jellyChatSettingsActions button,
+.jellyChatRoomPasswordSettings input,
+.jellyChatLockedRoom input,
+.jellyChatRoomPasswordActions button,
+.jellyChatLockedRoom button,
+.jellyChatMessageReplyButton,
+.jellyChatReplyQuote,
+.jellyChatMessageActionMenu,
+.jellyChatMessageActionMenu button,
+.jellyChatCopyFeedback,
+.jellyChatReactionTrayToggle,
+.jellyChatQuickReaction,
+.jellyChatEmojiSearch,
+.jellyChatEmojiEditToggle,
+.jellyChatQuickEditSlot,
+.jellyChatEmojiOption,
+.jellyChatComposerReply,
+.jellyChatComposerReply button {
+    border-radius: var(--abyss-radius) !important;
+}
+
+#jellyChatSendButton {
+    background: rgb(var(--abyss-accent)) !important;
+    border-color: rgba(var(--abyss-accent), .55) !important;
+    color: #121212 !important;
+    transition: background .37s var(--abyss-ease),
+                border-color .37s var(--abyss-ease),
+                color .37s var(--abyss-ease) !important;
+}
+
+#jellyChatSendButton:hover,
+#jellyChatSendButton:focus-visible {
+    background: rgba(var(--abyss-accent), .82) !important;
+}
+
+#jellyChatInput:focus,
+.jellyChatEmojiSearch:focus,
+.jellyChatRoomPasswordSettings input:focus,
+.jellyChatLockedRoom input:focus {
+    border-color: rgba(var(--abyss-accent), .40) !important;
+    outline-color: rgba(var(--abyss-accent), .60) !important;
+}
