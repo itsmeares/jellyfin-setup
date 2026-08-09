@@ -61,6 +61,7 @@
 }
 
 #jellyChatDrawer {
+    background-color: rgba(var(--abyss-glass-tint), .69) !important;
     background-image: none !important;
     border-left-color: rgba(var(--abyss-accent), .20) !important;
     border-radius: var(--abyss-radius) 0 0 var(--abyss-radius) !important;
