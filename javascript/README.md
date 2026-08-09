@@ -1,8 +1,8 @@
 # JavaScript Injector
 
-These are the custom Injector entries exported from the working Jellyfin setup on 2026-08-08. They are kept as separate snippets so the live configuration is easy to compare with the repository.
+These are the custom Injector entries preserved from the working Jellyfin setup. They are kept as separate snippets so the live configuration is easy to compare with the repository.
 
-All four entries are enabled and require authentication.
+All five entries are enabled and require authentication.
 
 ## Load order
 
@@ -12,6 +12,7 @@ All four entries are enabled and require authentication.
 | 2 | `01 - RS Home Core` | [`01-rs-home-core.js`](01-rs-home-core.js) | Core Home tweaks, including hiding the default My Media row |
 | 3 | `02 - SmartLists Home` | [`02-smartlists-home.js`](02-smartlists-home.js) | Renders the SmartLists collections as native-looking Home rows |
 | 4 | `03 - Provider Libraries` | [`03-home-hubs.js`](03-home-hubs.js) | Adds Streaming Services and Studios hubs, including their browsing modals |
+| 5 | `04 - Up Next Artwork` | [`04-up-next-artwork.js`](04-up-next-artwork.js) | Adds episode artwork and Abyss styling to Jellyfin's stock Up Next dialog while preserving its countdown, autoplay, Start Now, and Hide behavior |
 
 `03 - Provider Libraries` is the old name of the Injector entry. The script itself has since grown into the Home Hubs implementation, but keeping the entry name documented makes it easier to match this repository against the running server.
 
