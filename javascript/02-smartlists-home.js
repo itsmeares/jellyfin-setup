@@ -16,6 +16,7 @@
 
     function isHome() {
         const hash = (location.hash || '').toLowerCase();
+
         return hash === '#/home'
             || hash === '#!/home'
             || hash.includes('home.html');
@@ -48,6 +49,7 @@
         wanted = canonical(wanted);
 
         if (actual === wanted) return 100;
+
         if (
             actual.startsWith(`${wanted} `)
             || actual.endsWith(` ${wanted}`)
@@ -95,9 +97,9 @@
                 white-space: nowrap;
             }
 
-            #rs-smartlists-home .sectionTitleTextButton,
-            #rs-smartlists-home .sectionTitleTextButton:hover,
-            #rs-smartlists-home .sectionTitleTextButton:focus {
+            #${WRAPPER_ID} .sectionTitleTextButton,
+            #${WRAPPER_ID} .sectionTitleTextButton:hover,
+            #${WRAPPER_ID} .sectionTitleTextButton:focus {
                 text-decoration: none !important;
                 color: inherit !important;
             }
@@ -169,6 +171,7 @@
             image.style.backgroundImage = `url("${url}")`;
         } else {
             const placeholder = document.createElement('span');
+
             placeholder.className = 'rs-placeholder';
             placeholder.textContent = item.Name || '';
 
@@ -182,6 +185,7 @@
         text.className = 'cardText cardTextCentered';
 
         const title = document.createElement('a');
+
         title.className = 'itemAction textActionButton';
         title.href = detailsUrl(item);
         title.title = item.Name || '';
@@ -224,7 +228,7 @@
     async function getChildren(userId, collection) {
         const result = await ApiClient.getItems(userId, {
             ParentId: collection.Id,
-            Recursive: true,
+            Recursive: false,
             Fields:
                 'PrimaryImageAspectRatio,SortName,CommunityRating,PremiereDate,ProductionYear,DateCreated',
             ImageTypeLimit: 1,
@@ -237,11 +241,13 @@
 
     function rating(item) {
         const n = Number(item.CommunityRating);
+
         return Number.isFinite(n) ? n : -1;
     }
 
     function date(value) {
         const n = Date.parse(value || '');
+
         return Number.isFinite(n) ? n : 0;
     }
 
@@ -261,7 +267,8 @@
                 Limit: 1
             });
 
-            const value = date(result.Items?.[0]?.PremiereDate);
+            const value =
+                date(result.Items?.[0]?.PremiereDate);
 
             episodeCache.set(series.Id, value);
 
@@ -275,13 +282,17 @@
         const result = [...items];
 
         if (mode === 'rating') {
-            result.sort((a, b) => rating(b) - rating(a));
+            result.sort(
+                (a, b) =>
+                    rating(b) - rating(a)
+            );
         }
 
         if (mode === 'releaseDate') {
             result.sort(
                 (a, b) =>
-                    date(b.PremiereDate) - date(a.PremiereDate)
+                    date(b.PremiereDate)
+                    - date(a.PremiereDate)
             );
         }
 
@@ -289,17 +300,23 @@
             const dated = await Promise.all(
                 result.map(async item => ({
                     item,
+
                     lastEpisode:
                         item.Type === 'Series'
-                            ? await getLastEpisodeDate(userId, item)
+                            ? await getLastEpisodeDate(
+                                userId,
+                                item
+                            )
                             : 0
                 }))
             );
 
             dated.sort(
                 (a, b) =>
-                    b.lastEpisode - a.lastEpisode
-                    || rating(b.item) - rating(a.item)
+                    b.lastEpisode
+                    - a.lastEpisode
+                    || rating(b.item)
+                    - rating(a.item)
             );
 
             return dated.map(x => x.item);
@@ -316,12 +333,14 @@
 
         section.dataset.rsSmartlist = spec.name;
 
-        const titleContainer = document.createElement('div');
+        const titleContainer =
+            document.createElement('div');
 
         titleContainer.className =
             'sectionTitleContainer sectionTitleContainer-cards padded-left';
 
-        const titleLink = document.createElement('a');
+        const titleLink =
+            document.createElement('a');
 
         titleLink.className =
             'button-flat button-flat-mini sectionTitleTextButton';
@@ -329,36 +348,67 @@
         titleLink.href = detailsUrl(collection);
 
         const heading = document.createElement('h2');
-        heading.className = 'sectionTitle sectionTitle-cards';
+
+        heading.className =
+            'sectionTitle sectionTitle-cards';
+
         heading.textContent = spec.name;
 
         const arrow = document.createElement('span');
-        arrow.className = 'material-icons chevron_right';
-        arrow.setAttribute('aria-hidden', 'true');
+
+        arrow.className =
+            'material-icons chevron_right';
+
+        arrow.setAttribute(
+            'aria-hidden',
+            'true'
+        );
 
         titleLink.appendChild(heading);
         titleLink.appendChild(arrow);
+
         titleContainer.appendChild(titleLink);
 
         const shell = document.createElement('div');
 
         shell.innerHTML = `
-            <div is="emby-scroller"
-                 class="padded-top-focusscale padded-bottom-focusscale"
-                 data-centerfocus="true">
-                <div is="emby-itemscontainer"
-                     class="itemsContainer scrollSlider focuscontainer-x">
-                </div>
+            <div
+                is="emby-scroller"
+                class="
+                    padded-top-focusscale
+                    padded-bottom-focusscale
+                "
+                data-centerfocus="true"
+            >
+                <div
+                    is="emby-itemscontainer"
+                    class="
+                        itemsContainer
+                        scrollSlider
+                        focuscontainer-x
+                    "
+                ></div>
             </div>
         `;
 
-        const scroller = shell.firstElementChild;
-        const container = scroller.querySelector('.itemsContainer');
+        const scroller =
+            shell.firstElementChild;
+
+        const container =
+            scroller.querySelector(
+                '.itemsContainer'
+            );
 
         items
             .slice(0, MAX_ITEMS)
-            .forEach((item, index) =>
-                container.appendChild(createCard(item, index))
+            .forEach(
+                (item, index) =>
+                    container.appendChild(
+                        createCard(
+                            item,
+                            index
+                        )
+                    )
             );
 
         section.appendChild(titleContainer);
@@ -367,111 +417,192 @@
         return section;
     }
 
+    function sectionTitle(section) {
+        return String(
+            section
+                ?.querySelector(
+                    'h2.sectionTitle'
+                )
+                ?.textContent
+                || ''
+        )
+            .trim()
+            .toLowerCase();
+    }
+
     function findAnchor(container) {
-        const nextUp =
-            container
-                .querySelector('a[href*="type=nextup"]')
-                ?.closest('.verticalSection');
-
-        if (nextUp) return nextUp;
-
-        const videoSections = [
+        const sections = [
             ...container.querySelectorAll(
-                ':scope > .verticalSection'
+                ':scope > .verticalSection:not(.rs-hide-my-media)'
             )
-        ].filter(section =>
-            section.querySelector(
-                '.itemsContainer[data-monitor*="videoplayback"]'
-            )
-        );
+        ];
 
-        if (videoSections.length) {
-            return videoSections[videoSections.length - 1];
+        const nextUp =
+            sections.find(section => {
+                const title =
+                    sectionTitle(section);
+
+                return (
+                    title === 'next up'
+                    || section.querySelector(
+                        'a[href*="type=nextup"]'
+                    )
+                );
+            });
+
+        if (nextUp) {
+            return nextUp;
         }
 
-        return container.querySelector(
-            ':scope > .verticalSection:not(.rs-hide-my-media)'
-        );
+        const continueWatching =
+            sections.find(section => {
+                const title =
+                    sectionTitle(section);
+
+                return (
+                    title === 'continue watching'
+                    || title === 'continue watching movies'
+                );
+            });
+
+        if (continueWatching) {
+            return continueWatching;
+        }
+
+        const playbackSections =
+            sections.filter(section =>
+                section.querySelector(
+                    '.itemsContainer[data-monitor*="videoplayback"]'
+                )
+            );
+
+        if (playbackSections.length) {
+            return playbackSections[
+                playbackSections.length - 1
+            ];
+        }
+
+        return null;
     }
 
     let rendering = false;
 
     async function render() {
         if (!isHome()) {
-            document.getElementById(WRAPPER_ID)?.remove();
+            document
+                .getElementById(WRAPPER_ID)
+                ?.remove();
+
             return;
         }
 
         const home =
-            document.querySelector('.homeSectionsContainer');
+            document.querySelector(
+                '.homeSectionsContainer'
+            );
 
         if (
             !home
             || !apiReady()
             || rendering
-            || document.getElementById(WRAPPER_ID)
-        ) return;
+            || document.getElementById(
+                WRAPPER_ID
+            )
+        ) {
+            return;
+        }
+
+        const anchor =
+            findAnchor(home);
+
+        if (!anchor?.parentElement) {
+            return;
+        }
 
         rendering = true;
 
         try {
             ensureStyle();
 
-            const userId = ApiClient.getCurrentUserId();
+            const userId =
+                ApiClient.getCurrentUserId();
 
-            const resolved = await Promise.all(
-                ROWS.map(async spec => {
-                    try {
-                        const collection =
-                            await findCollection(userId, spec.name);
+            const resolved =
+                await Promise.all(
+                    ROWS.map(async spec => {
+                        try {
+                            const collection =
+                                await findCollection(
+                                    userId,
+                                    spec.name
+                                );
 
-                        if (!collection) {
-                            console.warn(
-                                `[RS Home] Collection not found: ${spec.name}`
+                            if (!collection) {
+                                console.warn(
+                                    `[RS Home] Collection not found: ${spec.name}`
+                                );
+
+                                return null;
+                            }
+
+                            const raw =
+                                await getChildren(
+                                    userId,
+                                    collection
+                                );
+
+                            if (!raw.length) {
+                                return null;
+                            }
+
+                            const items =
+                                await sortItems(
+                                    userId,
+                                    raw,
+                                    spec.sort
+                                );
+
+                            return {
+                                spec,
+                                collection,
+                                items
+                            };
+                        } catch (error) {
+                            console.error(
+                                `[RS Home] Failed: ${spec.name}`,
+                                error
                             );
+
                             return null;
                         }
+                    })
+                );
 
-                        const raw =
-                            await getChildren(userId, collection);
+            if (!isHome()) {
+                return;
+            }
 
-                        if (!raw.length) return null;
+            const currentAnchor =
+                findAnchor(home);
 
-                        const items =
-                            await sortItems(
-                                userId,
-                                raw,
-                                spec.sort
-                            );
+            if (!currentAnchor?.parentElement) {
+                return;
+            }
 
-                        return {
-                            spec,
-                            collection,
-                            items
-                        };
-                    } catch (error) {
-                        console.error(
-                            `[RS Home] Failed: ${spec.name}`,
-                            error
-                        );
-
-                        return null;
-                    }
-                })
-            );
-
-            if (!isHome()) return;
-
-            const rows = resolved.filter(Boolean);
+            const rows =
+                resolved.filter(Boolean);
 
             if (!rows.length) {
                 console.warn(
                     '[RS Home] No SmartLists rows available.'
                 );
+
                 return;
             }
 
-            const wrapper = document.createElement('div');
+            const wrapper =
+                document.createElement('div');
+
             wrapper.id = WRAPPER_ID;
 
             for (const row of rows) {
@@ -484,16 +615,11 @@
                 );
             }
 
-            const anchor = findAnchor(home);
-
-            if (anchor?.parentElement === home) {
-                anchor.insertAdjacentElement(
+            currentAnchor
+                .insertAdjacentElement(
                     'afterend',
                     wrapper
                 );
-            } else {
-                home.prepend(wrapper);
-            }
 
             console.log(
                 `[RS Home] Rendered ${rows.length} SmartLists rows.`
@@ -507,17 +633,29 @@
 
     function schedule(rebuild = false) {
         if (rebuild) {
-            document.getElementById(WRAPPER_ID)?.remove();
+            document
+                .getElementById(WRAPPER_ID)
+                ?.remove();
         }
 
         clearTimeout(timer);
-        timer = setTimeout(render, 250);
+
+        timer =
+            setTimeout(
+                render,
+                250
+            );
     }
 
-    new MutationObserver(() => schedule())
+    new MutationObserver(
+        () => schedule()
+    )
         .observe(
             document.body,
-            { childList: true, subtree: true }
+            {
+                childList: true,
+                subtree: true
+            }
         );
 
     window.addEventListener(
