@@ -2,9 +2,17 @@
 
 This is the short version of how the pieces in this repository fit together. It covers the frontend customisation layer only; it is not intended to recreate the whole Jellyfin server from a raw `/config` backup.
 
-## 1. Install the matching plugins
+## 1. Start from Jellyfin 12.0 stable
 
-Start with the versions listed in [plugins.md](plugins.md). This setup is built around Jellyfin 12 RC, so plugin compatibility matters more than simply installing the latest release.
+This setup now targets the final Jellyfin 12.0 release, not an RC build. The official Jellyfin plugin repository should point at the stable manifest:
+
+```text
+https://repo.jellyfin.org/files/plugin/manifest.json
+```
+
+If the server was previously on the Jellyfin Unstable/RC repository, switch the official repository back to stable before restoring the normal plugin stack.
+
+Install the matching versions listed in [plugins.md](plugins.md). Plugin compatibility matters more than simply installing the newest release, especially for plugins that inject or modify the Jellyfin Web UI.
 
 ## 2. Apply the Custom CSS
 
@@ -33,6 +41,12 @@ The `.example.json` files preserve the actual rules while leaving out user IDs, 
 ## 5. Configure private integrations on the server
 
 Jellyfin Enhanced handles the Seerr and *arr integrations used by this setup. Configure their URLs and API keys directly in Jellyfin; those values are intentionally not stored in this public repository.
+
+## 6. Restore optional plugins separately
+
+Metadata/integration plugins such as Fanart, TMDb Box Sets, and Trakt can be restored independently from the Home customisation layer. Seasonals is also optional and should be treated as visual polish rather than a dependency of the Home scripts.
+
+Intro Skipper, JellyChat, and NotifySync were intentionally held out during the RC7 -> 12.0 stable migration instead of copying their old binaries back blindly. Check [plugins.md](plugins.md) for their current post-migration status before restoring them.
 
 ## Theme behaviour
 
