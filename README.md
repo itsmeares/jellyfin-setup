@@ -8,14 +8,20 @@ It is **not** a backup of Jellyfin's `/config` directory, and it does not contai
 
 | Component | Version / state | Used for |
 | --- | --- | --- |
-| Jellyfin | 12.0 RC | Server and web/webview target |
-| Media Bar Enhanced | 3.3.0.0 | Home hero and trailers |
-| Jellyfin Enhanced | 12.1.0.0 | Seerr and *arr integrations |
-| SmartLists | 12.0.0.12 | Custom Home collections |
-| JavaScript Injector | 3.6.0.0 | Home customisation scripts |
-| NotifySync | v12 preview build | Notifications |
-| JellyChat | 2.1.0.0 | Jellyfin chat integration |
+| Jellyfin | 12.0 stable | Server and web/webview target |
+| Media Bar Enhanced | 3.7.0.0 | Home hero and trailers |
+| Jellyfin Enhanced | 12.6.0.0 | Seerr and *arr integrations |
+| SmartLists | 12.0.0.21 | Custom Home collections |
+| JavaScript Injector | 4.0.0.0 | Home customisation scripts |
+| Fanart | 14.2609.13.0 | Artwork metadata provider |
+| TMDb Box Sets | 13.2609.15.0 | Automatic movie collections |
+| Trakt | 30.2606.17.0 | Trakt integration |
+| Seasonals | 3.3.0.0 | Optional seasonal UI effects |
 | Abyss | upstream `main` CSS | Theme |
+
+The server was migrated from Jellyfin 12 RC7 to the final 12.0 image on 2026-09-09. The official Jellyfin plugin repository is back on the stable manifest rather than the unstable/RC feed.
+
+Intro Skipper, JellyChat, and NotifySync were intentionally held out during the stable migration and are tracked separately in [docs/plugins.md](docs/plugins.md) until their post-migration state is confirmed.
 
 The full plugin list and compatibility notes live in [docs/plugins.md](docs/plugins.md).
 
@@ -44,4 +50,4 @@ API keys, passwords, access/session tokens, private URLs, user IDs, instance-spe
 
 ## Compatibility
 
-This setup currently targets Jellyfin 12 RC web and webview clients. Abyss still matches Jellyfin's legacy interface more closely than the modern/experimental interface, so some theme details can differ when the newer interface is enabled.
+This setup targets Jellyfin 12.0 stable web and webview clients. Abyss still matches Jellyfin's legacy interface more closely than the modern interface, so some theme details can differ when the newer interface is enabled.
