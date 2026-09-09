@@ -16,20 +16,16 @@ It is **not** a backup of Jellyfin's `/config` directory, and it does not contai
 | Fanart | 14.2609.13.0 | Artwork metadata provider |
 | TMDb Box Sets | 13.2609.15.0 | Automatic movie collections |
 | Trakt | 30.2606.17.0 | Trakt integration |
-| Seasonals | 3.3.0.0 | Optional seasonal UI effects |
+| Seasonals | 3.3.0.0 | Seasonal UI effects |
 | Abyss | upstream `main` CSS | Theme |
 
-The server was migrated from Jellyfin 12 RC7 to the final 12.0 image on 2026-09-09. The official Jellyfin plugin repository is back on the stable manifest rather than the unstable/RC feed.
-
-Intro Skipper, JellyChat, and NotifySync were intentionally held out during the stable migration and are tracked separately in [docs/plugins.md](docs/plugins.md) until their post-migration state is confirmed.
-
-The full plugin list and compatibility notes live in [docs/plugins.md](docs/plugins.md).
+The full plugin list and notes live in [docs/plugins.md](docs/plugins.md).
 
 ## Start here
 
-- [Setup guide](docs/setup.md) — how the pieces fit together and the order to restore them.
-- [Plugin stack](docs/plugins.md) — versions currently used with this setup.
-- [JavaScript Injector scripts](javascript/README.md) — exported snippets, load order, and what each one does.
+- [Setup](docs/setup.md) — current configuration and how the pieces fit together.
+- [Plugin stack](docs/plugins.md) — plugin versions used by this setup.
+- [JavaScript Injector scripts](javascript/README.md) — snippets, load order, and what each one does.
 - [SmartLists](smartlists/README.md) — the four Home collections and their sanitized rules.
 - [Third-party notices](THIRD_PARTY_NOTICES.md) — attribution for StudioHubs-derived work and external assets.
 
