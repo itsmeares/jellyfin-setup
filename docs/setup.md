@@ -1,55 +1,49 @@
 # Setup
 
-This is the short version of how the pieces in this repository fit together. It covers the frontend customisation layer only; it is not intended to recreate the whole Jellyfin server from a raw `/config` backup.
+This document describes the current Jellyfin frontend customisation stack and how its pieces fit together.
 
-## 1. Start from Jellyfin 12.0 stable
+## Server
 
-This setup now targets the final Jellyfin 12.0 release, not an RC build. The official Jellyfin plugin repository should point at the stable manifest:
+The setup runs on Jellyfin 12.0 stable. The official plugin repository uses:
 
 ```text
 https://repo.jellyfin.org/files/plugin/manifest.json
 ```
 
-If the server was previously on the Jellyfin Unstable/RC repository, switch the official repository back to stable before restoring the normal plugin stack.
+The plugin versions in use are listed in [plugins.md](plugins.md).
 
-Install the matching versions listed in [plugins.md](plugins.md). Plugin compatibility matters more than simply installing the newest release, especially for plugins that inject or modify the Jellyfin Web UI.
+## Custom CSS
 
-## 2. Apply the Custom CSS
+[`css/custom.css`](../css/custom.css) is applied through Jellyfin's Custom CSS field.
 
-Copy [`css/custom.css`](../css/custom.css) into Jellyfin's Custom CSS field.
-
-The current CSS stays deliberately small. It:
+The current CSS:
 
 1. imports the upstream Abyss theme;
 2. keeps the Media Bar Enhanced layout usable on iPad landscape;
-3. adds a little breathing room below the custom Studios row.
+3. adds spacing below the custom Studios row.
 
-Old Watcha/Jellium overrides are not part of this setup and should not be layered back on top by default.
+Old Watcha/Jellium overrides are not part of the current setup.
 
-## 3. Restore the JavaScript Injector snippets
+## JavaScript Injector
 
-Add the files from [`javascript/`](../javascript/) as separate JavaScript Injector entries, in the order documented in [javascript/README.md](../javascript/README.md).
+The custom Home behaviour lives in [`javascript/`](../javascript/). The load order and purpose of each snippet are documented in [javascript/README.md](../javascript/README.md).
 
-Those files are kept as exports from the working server. If the running setup changes, export the new working snippets rather than rebuilding them from memory.
+The Home scripts handle the custom Home layout, SmartLists rows, Streaming Services and Studios hubs, and the Up Next artwork changes.
 
-## 4. Recreate the SmartLists
+## SmartLists
 
-Create the four collections documented in [smartlists/README.md](../smartlists/README.md). Their names need to stay the same because the Home script finds the generated collections by name.
+The four Home collections are documented in [smartlists/README.md](../smartlists/README.md). Their names are kept stable because the Home script resolves the generated collections by name.
 
-The `.example.json` files preserve the actual rules while leaving out user IDs, collection IDs, timestamps, and other instance-specific state. Choose the appropriate reference user on the server when recreating each collection.
+The `.example.json` files preserve the rules without user IDs, collection IDs, timestamps, or other instance-specific state.
 
-## 5. Configure private integrations on the server
+## Home and theme behaviour
 
-Jellyfin Enhanced handles the Seerr and *arr integrations used by this setup. Configure their URLs and API keys directly in Jellyfin; those values are intentionally not stored in this public repository.
+Media Bar Enhanced owns the Home hero and trailer area. Abyss Spotlight is not used, and Abyss Home-section reordering is disabled because the Injector scripts control the Home layout.
 
-## 6. Restore optional plugins separately
+Seasonals adds visual effects independently of the Home scripts.
 
-Metadata/integration plugins such as Fanart, TMDb Box Sets, and Trakt can be restored independently from the Home customisation layer. Seasonals is also optional and should be treated as visual polish rather than a dependency of the Home scripts.
+Abyss is imported directly from its upstream `main` CSS. It matches Jellyfin's legacy interface more closely than the modern interface, so some theme details differ between layouts.
 
-Intro Skipper, JellyChat, and NotifySync were intentionally held out during the RC7 -> 12.0 stable migration instead of copying their old binaries back blindly. Check [plugins.md](plugins.md) for their current post-migration status before restoring them.
+## Integrations
 
-## Theme behaviour
-
-Abyss is imported directly from its upstream `main` CSS. Media Bar Enhanced remains responsible for the Home hero/trailer area, so this setup does not use Abyss Spotlight or Abyss Home-section reordering.
-
-Once these pieces are in place, the expected Home layout is documented in [smartlists/README.md](../smartlists/README.md).
+Jellyfin Enhanced provides the Seerr and *arr integrations used by the server. Integration URLs and API keys stay in Jellyfin and are not stored in this repository.
