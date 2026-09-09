@@ -2,13 +2,13 @@
 
 These are the custom Injector entries preserved from the working Jellyfin setup. They are kept as separate snippets so the live configuration is easy to compare with the repository.
 
-All five entries are enabled and require authentication.
+The four Home customisation entries are enabled and require authentication. `NotifySync Loader` is preserved in the repository but should only be enabled when the Jellyfin 12 NotifySync plugin is installed and confirmed working; NotifySync was intentionally held out during the RC7 -> 12.0 stable migration.
 
 ## Load order
 
 | Order | Injector name | File | Purpose |
 | ---: | --- | --- | --- |
-| 1 | `NotifySync Loader` | [`notifysync-loader.js`](notifysync-loader.js) | Loads the NotifySync frontend script |
+| 1 | `NotifySync Loader` | [`notifysync-loader.js`](notifysync-loader.js) | Loads the NotifySync frontend script; conditional on NotifySync being installed |
 | 2 | `01 - RS Home Core` | [`01-rs-home-core.js`](01-rs-home-core.js) | Core Home tweaks, including hiding the default My Media row |
 | 3 | `02 - SmartLists Home` | [`02-smartlists-home.js`](02-smartlists-home.js) | Renders the SmartLists collections as native-looking Home rows |
 | 4 | `03 - Provider Libraries` | [`03-home-hubs.js`](03-home-hubs.js) | Adds Streaming Services and Studios hubs, including their browsing modals |
