@@ -10,7 +10,7 @@ The Home customisation stack is handled by the four numbered entries below. `not
 | ---: | --- | --- | --- |
 | 1 | `NotifySync Loader` | [`notifysync-loader.js`](notifysync-loader.js) | Loads the NotifySync frontend script when that integration is enabled |
 | 2 | `01 - RS Home Core` | [`01-rs-home-core.js`](01-rs-home-core.js) | Core Home tweaks, including hiding the default My Media row |
-| 3 | `02 - SmartLists Home` | [`02-smartlists-home.js`](02-smartlists-home.js) | Renders the SmartLists collections as native-looking Home rows |
+| 3 | `02 - SmartLists Home` | [`02-smartlists-home.js`](02-smartlists-home.js) | Renders four SmartLists rows plus Media Cleaner's Leaving Soon collection, including English deadline badges |
 | 4 | `03 - Provider Libraries` | [`03-home-hubs.js`](03-home-hubs.js) | Adds Streaming Services and Studios hubs, including their browsing modals |
 | 5 | `04 - Up Next Artwork` | [`04-up-next-artwork.js`](04-up-next-artwork.js) | Adds episode artwork and Abyss styling to Jellyfin's stock Up Next dialog while preserving its countdown, autoplay, Start Now, and Hide behavior |
 
@@ -23,3 +23,17 @@ When a snippet changes on the live server, export the working Injector configura
 The exported scripts in this repository contain no API keys, passwords, access tokens, session tokens, or private server URLs. Keep private values out of future exports as well.
 
 The collections used by `02 - SmartLists Home` are documented in [smartlists/README.md](../smartlists/README.md).
+
+## Leaving Soon poster countdown
+
+The `02 - SmartLists Home` script also looks up the collection named `Leaving Soon` that **Media Cleaner** publishes. This is not a SmartLists-generated collection. Posters display English status/countdown badges (for example `14 days left`, `Due now`, `Protected`).
+
+To display the actual deadline without guessing, the script uses the authenticated Media Cleaner endpoint:
+
+```text
+GET /MediaCleaner/LeavingSoon/Collections/{collectionId}/Cards
+```
+
+The API provides `DeleteAfterUtc` and notice status. If the endpoint fails, the script leaves the badge off rather than inventing a deadline. Jellyfin's poster cards must remain `position: absolute` (verified in the browser); changing the image container to `position: relative` collapses the posters to height 0.
+
+The installed fork is [Media Cleaner 3.7.1.120000](https://github.com/itsmeares/jellyfin-plugin-media-cleaner/tree/feature/active-playback-leaving-soon) for Jellyfin 12. The daily destructive cleanup trigger is currently disabled; see [setup details](../docs/setup.md).
