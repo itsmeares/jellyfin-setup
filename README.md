@@ -1,49 +1,47 @@
 # jellyfin-setup
 
-This repository is the sanitized, versioned copy of the Jellyfin setup I actually run. It focuses on the parts that are easy to lose or awkward to recreate later: custom CSS, JavaScript Injector snippets, SmartLists rules, and the plugin versions they were tested with.
-
-It is **not** a backup of Jellyfin's `/config` directory, and it does not contain server credentials or private integration settings.
+Sanitized, versioned record of the **running Jellyfin 12.2** frontend setup. This repository documents the effective CSS, JavaScript Injector scripts, SmartLists definitions, and plugin versions. It is not a backup of Jellyfin's `/config` directory.
 
 ## Current stack
 
-| Component | Version / state | Used for |
+| Component | Installed version / state | Purpose |
 | --- | --- | --- |
-| Jellyfin | 12.0 stable | Server and web/webview target |
-| Media Bar Enhanced | 3.7.0.0 | Home hero and trailers |
-| Jellyfin Enhanced | 12.6.0.0 | Seerr and *arr integrations |
-| SmartLists | 12.0.0.21 | Custom Home collections |
-| JavaScript Injector | 4.0.0.0 | Home customisation scripts |
-| Fanart | 14.2609.13.0 | Artwork metadata provider |
-| TMDb Box Sets | 13.2609.15.0 | Automatic movie collections |
-| Trakt | 30.2606.17.0 | Trakt integration |
-| Seasonals | 3.3.0.0 | Seasonal UI effects |
-| Abyss | upstream `main` CSS | Theme |
+| Jellyfin | 12.2.0 | Server and web client |
+| Abyss theme | Official upstream `v1.2.3` | Jellyfin 12 custom CSS |
+| Media Bar Enhanced | 3.9.1.0 | Home hero and trailers |
+| Jellyfin Enhanced | 12.11.0.0 | Frontend integrations |
+| SmartLists | 12.0.3.0 (stable) | Four automatic Home collections |
+| JavaScript Injector | 4.0.0.0 | Custom Home sections and visuals |
+| Media Cleaner | **3.7.1.120000 (own fork)** | Manually tagged Leaving Soon with a 14-day notice and active-playback-safe deletion |
+| Seasonals | 3.3.0.0 | Seasonal effects |
 
-The full plugin list and notes live in [docs/plugins.md](docs/plugins.md).
+See [docs/plugins.md](docs/plugins.md) for the other loaded plugins and details.
+
+## Current Home sections
+
+The [`02 - SmartLists Home`](javascript/02-smartlists-home.js) Injector script renders four SmartLists collections plus the Media Cleaner **Leaving Soon** collection. The Leaving Soon posters show **English deadline badges** (such as `14 days left`) from the plugin's actual deadline API, without assuming the tag was added 14 days before deletion.
+
+Leaving Soon items are selected **manually** by adding the exact Jellyfin tag `leaving-soon` to a movie or series. Automatic eligibility by age or watch history is not intended. **The destructive Media Cleaner cleanup task's daily trigger is currently disabled** after the fork rollout; notices and collection refreshes still work, but automated deletion will not run until that trigger is explicitly restored.
 
 ## Start here
 
-- [Setup](docs/setup.md) — current configuration and how the pieces fit together.
-- [Plugin stack](docs/plugins.md) — plugin versions used by this setup.
-- [JavaScript Injector scripts](javascript/README.md) — snippets, load order, and what each one does.
-- [SmartLists](smartlists/README.md) — the four Home collections and their sanitized rules.
-- [Third-party notices](THIRD_PARTY_NOTICES.md) — attribution for StudioHubs-derived work and external assets.
+- [Setup](docs/setup.md) — how the present configuration fits together
+- [Plugin stack](docs/plugins.md) — installed versions, including the Media Cleaner fork
+- [Injector scripts](javascript/README.md) — current script order and functionality
+- [SmartLists](smartlists/README.md) — four SmartLists plus the separate Leaving Soon collection
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 ## Repository layout
 
 ```text
-css/          Custom CSS used by Jellyfin
-javascript/   JavaScript Injector snippets
-smartlists/   Sanitized SmartLists definitions
-docs/         Setup and plugin notes
+css/          Active Custom CSS
+javascript/   JavaScript Injector scripts
+smartlists/   Sanitized definitions of the four SmartLists
+docs/         Current setup and plugin documentation
 ```
 
-The files here are meant to stay close to the working server. When a setting can be exported exactly, the exported version is preferred over recreating it from memory.
+## Privacy and compatibility
 
-## Private data
+Never commit raw Jellyfin configuration, personal media metadata, account names or IDs, tokens, credentials, private hostnames/URLs, or Leaving Soon state databases here. Runtime state stays on the server.
 
-API keys, passwords, access/session tokens, private URLs, user IDs, instance-specific GUIDs, and raw Jellyfin configuration files do not belong in this repository. Documentation should use examples or placeholders where a private value would normally be required.
-
-## Compatibility
-
-This setup targets Jellyfin 12.0 stable web and webview clients. Abyss still matches Jellyfin's legacy interface more closely than the modern interface, so some theme details can differ when the newer interface is enabled.
+Target: Jellyfin 12.2 server and its web interface. Upstream Abyss v1.2.3 introduced Jellyfin 12 support, but upstream's published testing matrix does not expressly certify 12.2.
