@@ -14,108 +14,6 @@
     ];
 
     const episodeCache = new Map();
-    const COUNTDOWN_REFRESH_MS = 60 * 1000;
-
-    function normalizedId(value) {
-        return String(value || '').replaceAll('-', '').toLowerCase();
-    }
-
-    function field(item, pascal, camel) {
-        return item?.[pascal] ?? item?.[camel];
-    }
-
-    // Media Cleaner owns the notice deadline. Do not infer it from DateCreated
-    // or when a tag was added; those dates can be unrelated to publication.
-    async function getLeavingSoonDeadlines(collectionId) {
-        if (typeof ApiClient.fetch !== 'function' || typeof ApiClient.getUrl !== 'function') {
-            return new Map();
-        }
-
-        try {
-            const response = await ApiClient.fetch({
-                url: ApiClient.getUrl(
-                    `MediaCleaner/LeavingSoon/Collections/${encodeURIComponent(collectionId)}/Cards`
-                ),
-                dataType: 'json'
-            });
-
-            const data = typeof response?.json === 'function'
-                ? await response.json()
-                : response;
-
-            if (!field(data, 'IsOwned', 'isOwned')) {
-                console.warn('[RS Home] Media Cleaner did not recognize Leaving Soon collection.');
-                return new Map();
-            }
-
-            const entries = field(data, 'Items', 'items') || [];
-            return new Map(entries
-                .map(entry => [normalizedId(field(entry, 'ItemId', 'itemId')), entry])
-                .filter(([id]) => id));
-        } catch (error) {
-            // Never display an invented or stale countdown when API data is unavailable.
-            console.warn('[RS Home] Leaving Soon deadlines unavailable.', error);
-            return new Map();
-        }
-    }
-
-    function countdownPresentation(entry) {
-        const status = String(field(entry, 'Status', 'status') || '');
-
-        if (status === 'ProtectedUntilWatched') {
-            return { text: 'Korumalı', title: 'İzlenene kadar korumalı' };
-        }
-        if (status === 'ProtectedByOtherUser') {
-            return { text: 'Korumalı', title: 'Başka bir kullanıcı tarafından korumalı' };
-        }
-        if (status === 'PendingPublication') {
-            return { text: 'Hazırlanıyor', title: 'Leaving Soon yayını bekleniyor' };
-        }
-
-        const rawDate = field(entry, 'DeleteAfterUtc', 'deleteAfterUtc');
-        if (!rawDate) return null;
-
-        const deadline = new Date(rawDate);
-        if (!Number.isFinite(deadline.getTime())) return null;
-
-        const title = `Silinmeye uygun olacağı tarih: ${deadline.toLocaleString('tr-TR')}. Aktif izleme veya koruma varsa silme ertelenebilir.`;
-        const remaining = deadline.getTime() - Date.now();
-
-        if (remaining <= 0 || status === 'Ready') {
-            return { text: 'Süre doldu', title };
-        }
-        if (remaining > 24 * 60 * 60 * 1000) {
-            return { text: `${Math.ceil(remaining / (24 * 60 * 60 * 1000))} gün kaldı`, title };
-        }
-        if (remaining > 60 * 60 * 1000) {
-            return { text: `${Math.ceil(remaining / (60 * 60 * 1000))} saat kaldı`, title };
-        }
-        return { text: '1 saatten az', title };
-    }
-
-    function updateCountdownBadge(badge, entry) {
-        const presentation = countdownPresentation(entry);
-        if (!presentation) {
-            badge.remove();
-            return;
-        }
-
-        badge.textContent = presentation.text;
-        badge.title = presentation.title;
-        badge.setAttribute('aria-label', presentation.text);
-    }
-
-    function refreshCountdownBadges() {
-        document.querySelectorAll(`#${WRAPPER_ID} .rs-leaving-soon-badge`).forEach(badge => {
-            const deadline = badge.dataset.deleteAfterUtc;
-            if (!deadline) return;
-
-            updateCountdownBadge(badge, {
-                Status: badge.dataset.noticeStatus,
-                DeleteAfterUtc: deadline
-            });
-        });
-    }
 
     function isHome() {
         const hash = (location.hash || '').toLowerCase();
@@ -182,28 +80,6 @@
                 background-color: #242424;
             }
 
-            #${WRAPPER_ID} .rs-leaving-soon-badge {
-                position: absolute;
-                top: 10px;
-                right: 9px;
-                z-index: 2;
-                max-width: calc(100% - 18px);
-                padding: 5px 9px;
-                border: 1px solid rgba(255,255,255,.24);
-                border-radius: 999px;
-                background: rgba(22, 23, 29, .84);
-                color: #fff;
-                font-size: 11px;
-                font-weight: 700;
-                line-height: 1.25;
-                text-align: center;
-                white-space: nowrap;
-                box-shadow: 0 2px 10px rgba(0,0,0,.38);
-                backdrop-filter: blur(7px);
-                -webkit-backdrop-filter: blur(7px);
-                pointer-events: none;
-            }
-
             #${WRAPPER_ID} .rs-placeholder {
                 position: absolute;
                 inset: 0;
@@ -260,7 +136,7 @@
         });
     }
 
-    function createCard(item, index, deadlineEntry = null) {
+    function createCard(item, index) {
         const card = document.createElement('div');
 
         card.className =
@@ -301,18 +177,6 @@
             placeholder.textContent = item.Name || '';
 
             image.appendChild(placeholder);
-        }
-
-        if (deadlineEntry) {
-            const badge = document.createElement('span');
-            badge.className = 'rs-leaving-soon-badge';
-            badge.dataset.noticeStatus = String(field(deadlineEntry, 'Status', 'status') || '');
-            badge.dataset.deleteAfterUtc = String(field(deadlineEntry, 'DeleteAfterUtc', 'deleteAfterUtc') || '');
-
-            updateCountdownBadge(badge, deadlineEntry);
-            if (badge.isConnected === false && badge.textContent) {
-                image.appendChild(badge);
-            }
         }
 
         const footer = document.createElement('div');
@@ -462,7 +326,7 @@
         return result;
     }
 
-    function createSection(spec, collection, items, deadlines = null) {
+    function createSection(spec, collection, items) {
         const section = document.createElement('div');
 
         section.className =
@@ -543,10 +407,7 @@
                     container.appendChild(
                         createCard(
                             item,
-                            index,
-                            spec.name === 'Leaving Soon'
-                                ? deadlines?.get(normalizedId(item.Id))
-                                : null
+                            index
                         )
                     )
             );
@@ -702,15 +563,10 @@
                                     spec.sort
                                 );
 
-                            const deadlines = spec.name === 'Leaving Soon'
-                                ? await getLeavingSoonDeadlines(collection.Id)
-                                : null;
-
                             return {
                                 spec,
                                 collection,
-                                items,
-                                deadlines
+                                items
                             };
                         } catch (error) {
                             console.error(
@@ -755,8 +611,7 @@
                     createSection(
                         row.spec,
                         row.collection,
-                        row.items,
-                        row.deadlines
+                        row.items
                     )
                 );
             }
@@ -814,6 +669,5 @@
         () => schedule(true)
     );
 
-    setInterval(refreshCountdownBadges, COUNTDOWN_REFRESH_MS);
     schedule();
 })();
