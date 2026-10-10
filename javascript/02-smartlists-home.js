@@ -180,8 +180,6 @@
 
             #${WRAPPER_ID} .rs-smartlist-card .cardImageContainer {
                 background-color: #242424;
-                position: relative;
-                overflow: hidden;
             }
 
             #${WRAPPER_ID} .rs-leaving-soon-badge {
