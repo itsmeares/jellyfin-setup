@@ -8,6 +8,7 @@
     const ROWS = [
         { name: 'Top Rated Movies', sort: 'rating' },
         { name: 'Top Rated TV Shows', sort: 'rating' },
+        { name: 'Leaving Soon', sort: 'none' },
         { name: 'Currently Airing', sort: 'lastEpisode' },
         { name: 'Recent Releases', sort: 'releaseDate' }
     ];
