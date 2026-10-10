@@ -1,6 +1,6 @@
 # SmartLists
 
-These four SmartLists power the custom Home rows used by `javascript/02-smartlists-home.js`:
+These four SmartLists (plugin 12.0.3.0 stable) power four of the custom Home rows used by [`javascript/02-smartlists-home.js`](../javascript/02-smartlists-home.js):
 
 - `Top Rated Movies`
 - `Top Rated TV Shows`
@@ -8,6 +8,8 @@ These four SmartLists power the custom Home rows used by `javascript/02-smartlis
 - `Recent Releases`
 
 The names are part of the contract between SmartLists and the Home script, so keep them unchanged.
+
+A **fifth Home row**, `Leaving Soon`, is **not** a SmartLists collection/rule. Media Cleaner 3.7.1.120000 creates it from media explicitly tagged `leaving-soon`. The Injector script renders this collection and displays English `DeleteAfterUtc` countdown badges obtained from Media Cleaner's API. See [setup](../docs/setup.md).
 
 ## Recreating the collections
 
@@ -42,7 +44,7 @@ The plugin decides which items belong in each collection. The Injector script th
 - `Currently Airing` — latest episode premiere date descending, then Community Rating descending
 - `Recent Releases` — premiere/release date descending
 
-At most 20 items are rendered in each custom row.
+At most 20 items are rendered in each custom row, including Leaving Soon.
 
 ## Home order
 
@@ -55,6 +57,7 @@ Next Up
 Top Rated Movies
 Top Rated TV Shows
 Streaming Services
+Leaving Soon
 Currently Airing
 Recent Releases
 Recently Added in Movies
