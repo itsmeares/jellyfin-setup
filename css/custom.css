@@ -1,5 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/AumGupta/abyss-jellyfin@main/abyss.css');
-
+@import url('https://cdn.jsdelivr.net/gh/AumGupta/abyss-jellyfin@v1.2.3/abyss.css');
 
 /* Media Bar Enhanced - iPad landscape fix */
 @media (min-width: 769px) and (max-width: 1600px)
@@ -12,7 +11,6 @@
         padding-bottom: calc(5rem + env(safe-area-inset-bottom)) !important;
     }
 }
-
 
 /* Home - bottom spacing after Studios */
 #rs-studio-hubs {
